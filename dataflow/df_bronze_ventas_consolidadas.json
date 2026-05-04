@@ -54,6 +54,9 @@
 				},
 				{
 					"name": "union2"
+				},
+				{
+					"name": "derivedColumn4"
 				}
 			],
 			"scriptLines": [
@@ -146,7 +149,17 @@
 				"select2 derive(canal_venta = \"SCZ\") ~> derivedColumn2",
 				"select3 derive(canal_venta = \"Online\") ~> derivedColumn3",
 				"derivedColumn1, derivedColumn2 union(byName: true)~> union1",
-				"union1, derivedColumn3 union(byName: true)~> union2"
+				"union1, derivedColumn3 union(byName: true)~> union2",
+				"union2 derive(fecha_venta = coalesce( \r",
+				"    toDate(fecha_venta, 'yyyy-MM-dd'), \r",
+				"    toDate(fecha_venta, 'dd/MM/yyyy'), \r",
+				"    toDate(fecha_venta, 'MM-dd-yyyy'), \r",
+				"    toDate(fecha_venta, 'yyyy/MM/dd'), \r",
+				"    toDate(fecha_venta, 'dd-MMM-yyyy'),\r",
+				"    toDate(fecha_venta, 'MMMM dd, yyyy'),\r",
+				"    toDate(fecha_venta, \"dd 'de' MMMM 'de' yyyy\")\r",
+				"),",
+				"          nombre_producto_original = initCap(regexReplace(trim(nombre_producto_original), '\\\\s+', ' '))) ~> derivedColumn4"
 			]
 		}
 	}
