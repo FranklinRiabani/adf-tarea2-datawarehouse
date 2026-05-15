@@ -1,0 +1,64 @@
+{
+	"name": "bronce_inventario",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dw_ventas",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "bronze"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "codigo_producto",
+				"type": "varchar"
+			},
+			{
+				"name": "nombre_producto",
+				"type": "varchar"
+			},
+			{
+				"name": "categoria",
+				"type": "varchar"
+			},
+			{
+				"name": "precio_venta",
+				"type": "varchar"
+			},
+			{
+				"name": "costo_adquisicion",
+				"type": "varchar"
+			},
+			{
+				"name": "stock_actual",
+				"type": "varchar"
+			},
+			{
+				"name": "stock_minimo",
+				"type": "varchar"
+			},
+			{
+				"name": "sucursal",
+				"type": "varchar"
+			},
+			{
+				"name": "proveedor",
+				"type": "varchar"
+			},
+			{
+				"name": "ultima_reposicion",
+				"type": "varchar"
+			},
+			{
+				"name": "activo",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "bronze",
+			"table": "inventario"
+		}
+	}
+}

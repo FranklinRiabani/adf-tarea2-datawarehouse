@@ -1,0 +1,72 @@
+{
+	"name": "bronce_ventas_online",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dw_ventas",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "bronze"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "order_id",
+				"type": "varchar"
+			},
+			{
+				"name": "timestamp",
+				"type": "varchar"
+			},
+			{
+				"name": "product",
+				"type": "varchar"
+			},
+			{
+				"name": "qty",
+				"type": "varchar"
+			},
+			{
+				"name": "unit_price",
+				"type": "varchar"
+			},
+			{
+				"name": "customer/name",
+				"type": "varchar"
+			},
+			{
+				"name": "customer/email",
+				"type": "varchar"
+			},
+			{
+				"name": "customer/city",
+				"type": "varchar"
+			},
+			{
+				"name": "payment_method",
+				"type": "varchar"
+			},
+			{
+				"name": "status",
+				"type": "varchar"
+			},
+			{
+				"name": "shipping_cost",
+				"type": "varchar"
+			},
+			{
+				"name": "channel",
+				"type": "varchar"
+			},
+			{
+				"name": "customer",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "bronze",
+			"table": "ventas_online"
+		}
+	}
+}

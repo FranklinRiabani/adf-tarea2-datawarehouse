@@ -1,0 +1,60 @@
+{
+	"name": "bronce_ventas_lpz",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dw_ventas",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "bronze"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID_Venta",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha_Venta",
+				"type": "varchar"
+			},
+			{
+				"name": "Producto",
+				"type": "varchar"
+			},
+			{
+				"name": "Cant",
+				"type": "varchar"
+			},
+			{
+				"name": "PrecioUnit",
+				"type": "varchar"
+			},
+			{
+				"name": "Sucursal",
+				"type": "varchar"
+			},
+			{
+				"name": "Vendedor",
+				"type": "varchar"
+			},
+			{
+				"name": "NombreCliente",
+				"type": "varchar"
+			},
+			{
+				"name": "EmailCliente",
+				"type": "varchar"
+			},
+			{
+				"name": "MetodoPago",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "bronze",
+			"table": "ventas_lpz"
+		}
+	}
+}
