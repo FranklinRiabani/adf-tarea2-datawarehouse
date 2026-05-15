@@ -30,6 +30,9 @@
 				},
 				{
 					"name": "derivedColumn2"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -82,7 +85,17 @@
 				"          costo_adquisicion = toDecimal(iifNull(costo_adquisicion, \"0.0\", costo_adquisicion)),",
 				"          stock_actual = toInteger(stock_actual),",
 				"          nombre_producto = lower(trim(nombre_producto))) ~> derivedColumn2",
-				"derivedColumn2 sink(allowSchemaDrift: true,",
+				"derivedColumn2 aggregate(groupBy(codigo_producto),",
+				"     stock_actual = sum(stock_actual),",
+				"          nombre_producto = first(nombre_producto),",
+				"          categoria = first(categoria),",
+				"          precio_venta = first(precio_venta),",
+				"          costo_adquisicion = first(costo_adquisicion),",
+				"          sucursal = first(sucursal),",
+				"          proveedor = first(proveedor),",
+				"          ultima_reposicion = first(ultima_reposicion),",
+				"          activo = first(activo)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          codigo_producto as string,",
