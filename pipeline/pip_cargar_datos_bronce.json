@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "df_bronze_inventario",
+						"referenceName": "df_bronce_cargar_datos",
 						"type": "DataFlowReference"
 					},
 					"compute": {
