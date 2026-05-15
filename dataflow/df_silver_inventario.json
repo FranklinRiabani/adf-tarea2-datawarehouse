@@ -1,0 +1,122 @@
+{
+	"name": "df_silver_inventario",
+	"properties": {
+		"folder": {
+			"name": "silver"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "bronce_inventario",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "silver_inventario",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          codigo_producto as string,",
+				"          nombre_producto as string,",
+				"          categoria as string,",
+				"          precio_venta as string,",
+				"          costo_adquisicion as string,",
+				"          stock_actual as string,",
+				"          sucursal as string,",
+				"          proveedor as string,",
+				"          ultima_reposicion as string,",
+				"          activo as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT \\n\\n    TRIM(codigo_producto) AS codigo_producto,\\n    TRIM(nombre_producto) AS nombre_producto,\\n    TRIM(categoria) AS categoria,\\n    TRIM(precio_venta) AS precio_venta,\\n    TRIM(costo_adquisicion) AS costo_adquisicion,\\n    TRIM(stock_actual) AS stock_actual,\\n    TRIM(sucursal) AS sucursal,\\n    TRIM(proveedor) AS proveedor,\\n    TRIM(ultima_reposicion) AS ultima_reposicion,\\n    TRIM(activo) AS activo\\nFROM bronze.inventario\\nWHERE codigo_producto IS NOT NULL AND TRIM(codigo_producto) <> \\'\\'\\n',",
+				"     format: 'query') ~> source1",
+				"source1 derive(categoria = case(\r",
+				"  in(['computadoras','laptops','pcs'], categoria), 'Computadoras',\r",
+				"  in(['monitores','pantallas'], categoria), 'Monitores',\r",
+				"  in(['perifericos','periféricos'], categoria), 'Perifericos',\r",
+				"  in(['audio','sonido'], categoria), 'Audio',\r",
+				"  in(['tablets','tabletas'], categoria), 'Tablets',\r",
+				"  in(['impresoras','printers'], categoria), 'Impresoras',\r",
+				"  in(['almacenamiento','storage'], categoria), 'Almacenamiento',\r",
+				"  in(['accesorios','acc.'], categoria), 'Accesorios',\r",
+				"  in(['redes','networking'], categoria), 'Redes',\r",
+				"  in(['componentes','hardware'], categoria), 'Componentes',\r",
+				"  categoria\r",
+				"),",
+				"          precio_venta = toDecimal(regexReplace(toString(precio_venta), '[^0-9.]', '')),",
+				"          activo = iif(in(['si','true','1','yes'], lower(trim(toString(activo)))), true(), false()),",
+				"          sucursal = case(\r",
+				"    in(['SCZ','Santa Cruz','Sta Cruz','santa cruz'], sucursal), 'Santa Cruz',\r",
+				"    in(['LPZ','La Paz','LP','la paz'], sucursal), 'La Paz',\r",
+				"    sucursal),",
+				"          ultima_reposicion = coalesce( \r",
+				"    toDate(ultima_reposicion, 'yyyy-MM-dd'), \r",
+				"    toDate(ultima_reposicion, 'dd/MM/yyyy'), \r",
+				"    toDate(ultima_reposicion, 'MM-dd-yyyy'), \r",
+				"    toDate(ultima_reposicion, 'yyyy/MM/dd'), \r",
+				"    toDate(ultima_reposicion, 'dd-MMM-yyyy'),\r",
+				"    toDate(ultima_reposicion, 'MMMM dd, yyyy'),\r",
+				"    toDate(ultima_reposicion, \"dd 'de' MMMM 'de' yyyy\")\r",
+				")) ~> derivedColumn1",
+				"derivedColumn1 derive(precio_venta = iifNull(precio_venta, 0.0, precio_venta),",
+				"          costo_adquisicion = toDecimal(iifNull(costo_adquisicion, \"0.0\", costo_adquisicion)),",
+				"          stock_actual = toInteger(stock_actual),",
+				"          nombre_producto = lower(trim(nombre_producto))) ~> derivedColumn2",
+				"derivedColumn2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          codigo_producto as string,",
+				"          nombre_producto as string,",
+				"          categoria as string,",
+				"          precio_venta as decimal(18,2),",
+				"          costo_adquisicion as decimal(18,2),",
+				"          stock_actual as integer,",
+				"          sucursal as string,",
+				"          proveedor as string,",
+				"          ultima_reposicion as date,",
+				"          activo as boolean",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          codigo_producto,",
+				"          nombre_producto,",
+				"          categoria,",
+				"          precio_venta,",
+				"          costo_adquisicion,",
+				"          stock_actual,",
+				"          sucursal,",
+				"          proveedor,",
+				"          ultima_reposicion,",
+				"          activo",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
