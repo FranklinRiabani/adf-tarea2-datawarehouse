@@ -1,0 +1,19 @@
+{
+	"name": "personas_segip",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "segip_db",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "bronze"
+		},
+		"annotations": [],
+		"type": "PostgreSqlV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "public",
+			"table": "segip_personas"
+		}
+	}
+}
