@@ -2,7 +2,7 @@
 	"name": "adf-ucb-dw-ventas-7243645",
 	"properties": {
 		"trustModeClaimForMi": {
-			"value": "Enabled",
+			"value": "Disabled",
 			"editable": true
 		}
 	},
